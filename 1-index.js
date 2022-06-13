@@ -5,24 +5,29 @@
 /*
  * Виведення даних: console.log та alert. Вкладка Console у Chrome Devtools.
  */
+// https://marketplace.visualstudio.com/items?itemName=akamud.vscode-javascript-snippet-pack
+// https://marketplace.visualstudio.com/items?itemName=usernamehw.errorlens
 
-// console.log('10');
-// alert('Hello');
+// console.log("10");
+// console.log(10);
+// alert("Hello");
 
 /*
  * Змінні: оголошення з let та const, іменування.
  */
+let userLastName = "";
 
+// console.log(total);
 // const userLastName = 'Bertie';
 
-// username = 'Winifred';
+// userLastName = "Winifred";
 
-// console.log(username);
+// console.log(userLastName);
 
 /*
  * Отримання даних: prompt и confirm.
  */
-// const userAge = prompt('Сколько тебе лет?');
-// const isAdult = confirm('Вам є 18 років?');
+// const userAge = prompt("Скільки тобі років?");
+// const isAdult = confirm("Вам є 18 років?");
 
-// console.log(isAdult);
+// console.log(Number(userAge));
