@@ -21,28 +21,61 @@ const filmDuna = {
     'Georgia Garrett',
     'Jackson Ballard',
   ],
+  newFilm: {
+    title: 'Mango',
+    updadeNewFilm(title) {
+      console.log(' in new film', this);
+      this.title = title;
+    },
+  },
   adult: false,
 
+  getTitle() {
+    // console.log(filmDuna.title);💩
+    return this.title;
+  },
+
   changeTitle(newTitle) {
-    // this.title = newTitle;
+    this.title = newTitle;
   },
 
   addActor(newActor) {
-    // this.actors.push(newActor);
+    this.actors.push(newActor);
   },
 
-  updateRating(newRating) {
-    // this.rating = newRating;
+  updateRating(newRating = 1) {
+    this.rating = newRating;
+  },
+
+  updateAdult() {
+    this.adult = !this.adult;
   },
 
   isAdult() {
-    // return this.adult;
+    return this.adult;
   },
 };
 
-filmDuna.changeTitle('Matrix');
-filmDuna.addActor('Eddie');
-filmDuna.updateRating(8);
-console.log(filmDuna.isAdult());
+// filmDuna.changeTitle('Matrix');
+// filmDuna.addActor('Eddie');
+// filmDuna.updateRating(8);
+// console.log(filmDuna.isAdult());
 
-console.log(filmDuna);
+// console.log(filmDuna.actors);
+
+// function addActors(newActor) {
+//   filmDuna.actors.push(newActor);
+// }
+
+// addActors('Obivan');
+// filmDuna.addActor('Obivan');
+// console.log(filmDuna.actors);
+// // console.log(filmDuna.getTitle());
+// // console.log(filmDuna.title);
+// filmDuna.changeTitle('Stars wors');
+// console.log(filmDuna.getTitle());
+// filmDuna.updateRating(50);
+// console.log(filmDuna.rating);
+// filmDuna.updateAdult();
+// console.log(' filmDuna isAdult', filmDuna.isAdult());
+// filmDuna.newFilm.updadeNewFilm();

@@ -1,4 +1,5 @@
 'use strict';
+
 /*
 ? Напиши скрипт, який для об'єкта user послідовно:
 ? додає поле mood зі значенням 'happy'
@@ -7,40 +8,46 @@
 ? виводить вміст об'єкта user у форматі ключ: значення використовуючи Object.keys() і for...of
 */
 
-// const user = {
-//   name: 'Mango',
-//   age: 20,
-//   hobby: 'html',
-//   premium: true,
-// };
+const user = {
+  name: 'Mango',
+  age: 20,
+  hobby: 'html',
+  premium: true,
+};
 
 // user.mood = 'happy';
+user['mood'] = 'happy';
+
 // user.hobby = 'skydiving';
-// user.premium = !user.premium;
+user['hobby'] = 'skydiving';
+// user.premium = false;
+user.premium = !user.premium;
 
 // const userKeys = Object.keys(user);
-
 // for (const key of userKeys) {
+//   // console.log(user[key]);
 //   console.log(`${key}: ${user[key]}`);
 // }
+// console.log(user);
 
 /*
 ? У нас є об'єкт, де зберігаються зарплати нашої команди.
-? Напишіть код для підсумовування всіх зарплат та збережіть результат у змінній sum.
+? Напишіть метод об'єкта для підсумовування всіх зарплат та збережіть результат у змінній sum.
 ? Повинно вийти 390. Якщо об'єкт salaries порожній, результат має бути 0.
 */
 
-// const salaries = {
-//   John: 100,
-//   Ann: 160,
-//   Pete: 130,
-// };
+const salaries = {
+  John: 100,
+  Ann: 160,
+  Pete: 130,
+};
 
 // const salariesValues = Object.values(salaries);
-
+// console.log(salariesValues);
 // let total = 0;
 
 // for (const value of salariesValues) {
+//   console.log(value);
 //   total += value;
 // }
 
@@ -51,26 +58,22 @@
 ? Ф-ція рахує і повертає загальну вартість каміння з таким ім'ям.
 */
 
-// const stones = [
-//   { name: 'Ізумруд', price: 1300, quantity: 4 },
-//   { name: 'Бриліант', price: 2700, quantity: 3 },
-//   { name: 'Сапфір', price: 400, quantity: 7 },
-//   { name: 'Щебінь', price: 200, quantity: 2 },
-// ];
+const stones = [
+  { name: 'Ізумруд', price: 1300, quantity: 4 },
+  { name: 'Діамант', price: 2700, quantity: 3 },
+  { name: 'Сапфір', price: 400, quantity: 7 },
+  { name: 'Щебінь', price: 200, quantity: 2 },
+];
 
-// const calcTotalPrice = function (stones, stoneName) {
-//   for (const stone of stones) {
-//     if (stone.name === stoneName) {
-//       return stone.price * stone.quantity;
-//     }
-//   }
-
-//   return 'Такого камня не знайдено';
-// };
-
-// console.log(calcTotalPrice(stones, 'Ізумруд')); // 5200
-// console.log(calcTotalPrice(stones, 'Бриліант')); // 8100
-// console.log(calcTotalPrice(stones, 'Аконіт')); // Такого камня не найдено
+const calcTotalPrice = function (stones, stoneName) {
+  for (const { name, price, quantity } of stones) {
+    if (name === stoneName) {
+      return price * quantity;
+    }
+  }
+  return 'Такого камня не знайдено!';
+};
+// console.log(calcTotalPrice(stones, 'Діамант'));
 
 /*
 ? Напиши скрипт управління особистим кабінетом інтернет-банку.
@@ -102,15 +105,20 @@ const account = {
    */
   createTransaction(amount, type) {
     // return {
-    //   amount,
-    //   type,
+    //   amount: amount,
+    //   type: type,
     //   id: this.generateId(),
     // };
+    return {
+      amount,
+      type,
+      id: this.generateId(),
+    };
   },
 
   // Генерація id для транзакції
   generateId() {
-    // return (this.startId += 1);
+    return (this.startId += 1);
   },
 
   /*
@@ -120,8 +128,13 @@ const account = {
    * після чого додає його в історію транзакцій
    */
   deposit(amount) {
-    // this.transactions.push(this.createTransaction(amount, Transaction.DEPOSIT));
-    // this.balance += amount;
+    const depositTransaction = this.createTransaction(
+      amount,
+      Transaction.DEPOSIT
+    );
+
+    this.transactions.push(depositTransaction);
+    this.balance += amount;
   },
 
   /*
@@ -134,56 +147,64 @@ const account = {
    * про те, що зняття такої суми не можливе, недостатньо коштів.
    */
   withdraw(amount) {
-    // if (this.balance >= amount) {
-    //   this.transactions.push(
-    //     this.createTransaction(amount, Transaction.WITHDRAW)
-    //   );
-    //   this.balance -= amount;
-    // } else {
-    //   console.log('Снятие такой суммы не возможно, недостаточно средств.');
-    // }
+    if (amount > this.balance) {
+      alert(`Зняття такої суми неможливо, ви можете зняти ${this.balance}`);
+      return;
+    }
+    const withdrawTransaction = this.createTransaction(
+      amount,
+      Transaction.WITHDRAW
+    );
+    this.transactions.push(withdrawTransaction);
+    this.balance -= amount;
   },
 
   /*
    *Метод повертає поточний баланс
    */
   getBalance() {
-    // return this.balance;
+    return this.balance;
   },
 
   /*
    * Метод шукає та повертає об'єкт транзації по id
    */
   getTransactionDetails(id) {
-    // for (const transaction of this.transactions) {
-    //   if (transaction.id === id) {
-    //     return transaction;
-    //   }
-    // }
-    // return 'Такой транзакції не існує';
+    for (const item of this.transactions) {
+      if (item.id === id) {
+        return item;
+      }
+    }
+    return `Операції з id ${id} не знайдено!`;
   },
 
   /*
    * Метод повертає кількість коштів
    * певного типу транзакції з усієї історії транзакцій
    */
-  getTransactionTotal(type) {
-    // let totalAmount = 0;
-    // for (const transaction of this.transactions) {
-    //   if (type === transaction.type) {
-    //     totalAmount += transaction.amount;
-    //   }
-    // }
-    // return totalAmount;
+  getTransactionTotal(typeOperation) {
+    let sum = 0;
+    for (const { type, amount } of this.transactions) {
+      if (typeOperation === type) {
+        sum += amount;
+      }
+    }
+    return `Операцій по ${typeOperation} було здійснено на суму ${sum}`;
   },
 };
 
-// account.deposit(200);
-// account.deposit(300);
-// account.withdraw(200);
-// account.withdraw(200);
+account.deposit(200);
+account.deposit(300);
+account.deposit(500);
+account.deposit(1500);
+account.deposit(2500);
+account.withdraw(700);
+account.withdraw(200);
 
-// console.log(account.getBalance());
-// console.log(account.transactions);
-// console.log(account.getTransactionDetails(5));
-// console.log(account.getTransactionTotal(Transaction.WITHDRAW));
+console.log('Balance', account.getBalance());
+console.log(account.transactions);
+console.log(account.getTransactionDetails(5));
+console.log(account.getTransactionDetails(10));
+
+console.log(account.getTransactionTotal(Transaction.DEPOSIT));
+console.log(account.getTransactionTotal(Transaction.WITHDRAW));

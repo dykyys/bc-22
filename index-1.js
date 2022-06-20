@@ -4,24 +4,33 @@
  */
 
 // Сутність фільм (назва, опис, рейтинг, акторський склад, вікове обмеження)
-// const film = {
-//   title: 'Matrix',
-//   description:
-//     'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi, nemo iusto! Et doloribus praesentium laboriosam dolorem veritatis, magnam atque amet!',
-//   rating: 4,
-//   actors: ['Aiden', 'Mason', 'Jimmy'],
-//   isAdult: true,
-// };
-
+const film = {
+  title: 'Matrix',
+  description:
+    'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi, nemo iusto! Et doloribus praesentium laboriosam dolorem veritatis, magnam atque amet!',
+  rating: 4,
+  actors: ['Aiden', 'Mason', 'Jimmy'],
+  isAdult: true,
+  location: {
+    country: 'Jamaica',
+    city: 'Ocho Rios',
+  },
+};
+// console.log(film.title);
+// film.title = 'Matrix2';
+// console.log(film.actors);
+// film.actors.push('Obivan');
+// console.log(film.actors);
 /*
  * Доступ до властивостей(obj.key, obj[key]).
  * Додавання та зміна властивостей
  */
 
 // film['preview'] = './images/img.jpg';
-// film.isAdult = false;
+// film.preview = './images/img.jpg';
 
-// console.log(film);
+// film.isAdult = false;
+// film['isAdult] = false;
 
 /*
  *Короткий запис властивостей
@@ -31,13 +40,17 @@
 // const email = 'test@gmail.com';
 
 // const signupData = {
+//   username,
+//   email,
+// };
+// const signupData = {
 //   username: username,
 //   email: email,
 // };
 
 // console.log(signupData);
 
-// const firstName = prompt('Введіть ваше ім'я');
+// const firstName = prompt("Введіть ваше ім'я");
 // const email = prompt('Ваш email');
 
 // const user = {
@@ -46,7 +59,15 @@
 // };
 
 // console.log(user);
-
+// const f = {};
+// const d = {};
+// const a = {
+//   b: 1,
+//   c: 2,
+// };
+// a[f] = 3;
+// a[d] = 4;
+// console.log(a);
 /*
  * Посилальний тип
  */
@@ -60,11 +81,13 @@
 
 // console.log('obj: ', obj);
 // console.log('obj2: ', obj2);
+// console.log(obj === obj2);
 
 // obj2.c = 5;
 
 // console.log('obj: ', obj);
 // console.log('obj2: ', obj2);
+// console.log(obj === obj2);
 
 /*
  *Все у цьому світі об'єкти
@@ -79,5 +102,5 @@
 //   length: 4,
 // };
 
-// console.log(arr);
-// console.log(obj);
+// console.log(Array.isArray(arr));
+// console.log(Array.isArray(obj));
