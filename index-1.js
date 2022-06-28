@@ -15,7 +15,16 @@
 // };
 
 // const user2 = Object.create(user);
+// user2.lastName = 'Nyton';
+// user2.sex = 'man';
+// console.log(user2.__proto__);
+// console.log(user2);
+// console.log(user2.age);
 // user2.firstName = 'Louis';
+// console.log(user2);
+// console.log(user2.hasOwnProperty('age'));
+// console.log(user2);
+// console.log(user2.age);
 // user2.lastName = 'Miller';
 
 // const user3 = Object.create(user2);
@@ -29,16 +38,21 @@
 // console.log(user3.hasOwnProperty('age'));
 
 //* Цикл for...in, перебирає всі властивості, і власні та не власні.
-// for (const prop in user3) {
-//   if (user3.hasOwnProperty(prop)) {
-//     console.log(prop);
-//     console.log(user3[prop]);
+
+// for (const prop in user2) {
+//   //   console.log(prop);
+//   if (user2.hasOwnProperty(prop)) {
+//     // console.log(prop);
+//     console.log(user2[prop]);
 //   }
 // }
 
-// const numbers = [1, 2, 3];
+// const keysUser2 = Object.keys(user2);
+// console.log(keysUser2);
 
-// console.log(numbers);
+const numbers = [1, 2, 3];
+numbers.push();
+console.log(numbers.__proto__);
 
 // const num = 10.25;
 

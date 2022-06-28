@@ -6,47 +6,85 @@
  * Геттери та сеттери
  */
 
-class User {
-  #userEmail;
+/*
+ * Властивості класу доступні на екземплярах
+ * Методи класу доступні на екземплярах
+ * Приватні властивості доступні всередині класу, отримати доступ до них можна за допомогою методів класу
+ * Приватні методи доступні лише в медодах класа
+ * Статичні властивості доступлі лише на сомому класі
+ * Статичні методі доступні лише на самому класі
+ * Статичні приватні властивості доступні на сомому класі, всередині класу
+ * Статичні приватні методи доступні на сомому класі, всередині класу
+ */
 
-  static test = 5;
-
-  constructor(params) {
-    // this = {}
-    const { firstName, lastName, age, hairColor, eyesColor, gender, email } =
-      params;
-
+class CreateUser {
+  static pablicEmails = ['pablic@mail.com'];
+  static #takenEmails = ['taken@mail.com'];
+  static isEmailTaken(email) {
+    console.log(CreateUser.#takenEmails);
+    // console.log(this.#checkEmail('asdf'));💩
+    // return CreateUser.#takenEmails.includes(email);
+  }
+  #email;
+  constructor({
+    firstName,
+    lastName,
+    age,
+    hairColor,
+    eyesColor,
+    gender,
+    email,
+  }) {
     this.firstName = firstName;
+
     this.lastName = lastName;
     this.age = age;
-    this.legs = 2;
-    this.hands = 2;
-    this.eyes = 2;
     this.hairColor = hairColor;
     this.eyesColor = eyesColor;
     this.gender = gender;
-    this.#userEmail = email;
-    // retrun this;
+    this.#email = email;
   }
 
-  changeHairColor(newColor) {
-    this.hairColor = newColor;
+  // getEmail() {
+  //   return this.#email;
+  // }
+
+  getTakenEmails() {
+    console.log(CreateUser.#takenEmails);
   }
 
-  getFullName() {
-    return `${this.firstName} ${this.lastName}`;
+  get qwe() {
+    return this.gender;
   }
 
   get email() {
-    return this.#userEmail;
+    return this.#email;
   }
 
   set email(newEmail) {
-    this.#userEmail = newEmail;
+    const includesGmail = this.#checkEmail(newEmail);
+    console.log(CreateUser.isEmailTaken(newEmail));
+    if (includesGmail) {
+      this.#email = newEmail;
+    }
+  }
+
+  #checkEmail(newEmail) {
+    return newEmail.includes('@gmail');
+    // if (newEmail.includes('@gmail')) {
+    //   return true;
+    // }
+    // return false;
+  }
+
+  changeEmail(newEmail) {
+    const includesGmail = this.#checkEmail(newEmail);
+    console.log(includesGmail);
+    this.#email = newEmail;
   }
 }
 
-const user = new User({
+const user1 = new CreateUser({
   firstName: 'Jeff',
   lastName: 'Tucker',
   age: 30,
@@ -56,15 +94,4 @@ const user = new User({
   email: 'kuhhu@od.ye',
 });
 
-const user2 = new User({
-  firstName: 'Jean',
-  lastName: 'Smith',
-  age: 40,
-  hairColor: 'pink',
-  eyesColor: 'blue',
-  gender: 'female',
-  email: 'se@na.mv',
-});
-
-console.dir(User);
-console.log(user);
+// console.log(CreateUser.isEmailTaken());

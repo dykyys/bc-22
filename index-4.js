@@ -7,7 +7,7 @@ class User {
   #login;
   #email;
 
-  constructor({ firstName, lastName, age, login, email } = {}) {
+  constructor({ firstName = 'some name', lastName, age, login, email } = {}) {
     // this = {};
     this.firstName = firstName;
     this.lastName = lastName;
@@ -42,24 +42,50 @@ class User {
   }
 }
 
-const user = new User({
-  firstName: 'Mable',
-  lastName: 'Cohen',
-  age: 30,
-  login: 'testLogin',
-  email: 'weni@owva.ai',
+// const user = new User({
+//   firstName: 'Mable',
+//   lastName: 'Cohen',
+//   age: 30,
+//   login: 'testLogin',
+//   email: 'weni@owva.ai',
+// });
+
+// console.log(user);
+
+class Developer extends User {
+  constructor({ completedProjects, lastName, age, login, email }) {
+    super({ lastName, age, login, email });
+    this.completedProjects = completedProjects;
+  }
+  // constructor({ completedProjects, ...otherProps }) {
+  //   super({ ...otherProps });
+  //   this.completedProjects = completedProjects;
+  // }
+
+  doDeveloperWork() {
+    console.log('Вивчаю prototype і пишу проекти!');
+  }
+}
+
+const mangoDeveloper = new Developer({
+  completedProjects: 45,
+  firstName: 'Bertha',
+  lastName: 'Byrd',
+  age: 22,
+  login: 'myLogin',
+  email: 'tudeoh@ede.fm',
 });
+console.log(mangoDeveloper);
+// mangoDeveloper.doDeveloperWork();
 
 class Manager extends User {
-  constructor({ numberOfSales, ...otherProps } = {}) {
-    // this = super()
-    super(otherProps);
+  constructor({ numberOfSales, ...otherProps }) {
+    super({ ...otherProps });
     this.numberOfSales = numberOfSales;
-    // return this;
   }
 
-  doManagerWork() {
-    console.log('Занимаюсь продажами');
+  doManagerwork() {
+    console.log('Продаю застосунки які написав developer!');
   }
 }
 
@@ -71,39 +97,8 @@ const manager = new Manager({
   email: 'uhmop@balninih.sd',
   numberOfSales: 20,
 });
-
-console.log(manager);
-
-class Developer extends User {
-  constructor({ completedProjects, ...otherProps } = {}) {
-    // this = super();
-    super(otherProps);
-    this.completedProjects = completedProjects;
-    // return this;
-  }
-
-  doDeveloperWork() {
-    console.log('Пишу проэкт');
-  }
-}
-
-const developer = new Developer({
-  firstName: 'Bertha',
-  lastName: 'Byrd',
-  age: 22,
-  login: 'myLogin',
-  email: 'tudeoh@ede.fm',
-  completedProjects: 45,
-});
-
-// user = {
-//   firstName: 'Mable',
-//   lastName: 'Cohen',
-//   age: 30,
-//   login: 'testLogin',
-//   email: 'weni@owva.ai',
-//   getFullName() {}
-// };
+// console.log(manager);
+manager.doManagerwork();
 
 // manager = {
 //   firstName: 'Addie',

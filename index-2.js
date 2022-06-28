@@ -1,6 +1,6 @@
 /*
  * Клас - шаблон за яким будуть створені однотипні об'єкти
- * Примірник - це об'єкт створений за класом
+ * Примірник/екземпляр - це об'єкт створений за класом
  * Інтерфейс - набір доступних методів та властивостей
  */
 
@@ -8,71 +8,52 @@
 
 //TODO:  Створюємо людину за образом
 
-// function User(params) {
-//   const { firstName, lastName, age, hairColor, eyesColor, gender } = params;
-//   // this = {};
-//   this.firstName = firstName;
-//   this.lastName = lastName;
-//   this.age = age;
-//   this.legs = 2;
-//   this.hands = 2;
-//   this.eyes = 2;
-//   this.hairColor = hairColor;
-//   this.eyesColor = eyesColor;
-//   this.gender = gender;
-//   // [[Prototype]] ---> User.prototype
-//   // return this;
-// }
+function CreateUser({
+  firstName,
+  lastName,
+  age,
+  hairColor,
+  eyesColor,
+  gender,
+}) {
+  //   const { firstName, lastName, age } = params;
 
-// User.prototype.changeHairColor = function (newColor) {
-//   this.hairColor = newColor;
-// };
+  this.firstName = firstName;
+  this.lastName = lastName;
+  this.age = age;
+  this.hairColor = hairColor;
+  this.eyesColor = eyesColor;
+  this.gender = gender;
+}
 
-// User.prototype.getFullName = function () {
-//   return `${this.firstName} ${this.lastName}`;
-// };
+CreateUser.prototype.getFullName = function () {
+  return `${this.firstName} ${this.lastName}`;
+};
 
-// console.dir(User);
+CreateUser.prototype.changeHairColor = function (newColor) {
+  this.hairColor = newColor;
+};
 
-// const user = new User({
-//   firstName: 'Jeff',
-//   lastName: 'Tucker',
-//   age: 30,
-//   hairColor: 'brown',
-//   eyesColor: 'brown',
-//   gender: 'male',
-// });
+const user = new CreateUser({
+  firstName: 'Jeff',
+  lastName: 'Tucker',
+  age: 30,
+  hairColor: 'brown',
+  eyesColor: 'brown',
+  gender: 'male',
+});
+// // user.changeHairColor('black');
+// // console.log(user);
+// console.log(CreateUser.prototype === user.__proto__);
+// // console.log(user.__proto__);
+const user2 = new CreateUser({
+  firstName: 'Jean',
+  lastName: 'Smith',
+  age: 40,
+  hairColor: 'pink',
+  eyesColor: 'blue',
+  gender: 'female',
+});
 
-// const user2 = new User({
-//   firstName: 'Jean',
-//   lastName: 'Smith',
-//   age: 40,
-//   hairColor: 'pink',
-//   eyesColor: 'blue',
-//   gender: 'female',
-// });
-
-// console.log(user);
-// console.log(user.getFullName());
-
-// const person1 = {
-//   firstName: 'Edward',
-//   lastName: 'Smith',
-//   age: 30,
-//   legs: 2,
-//   hands: 2,
-//   eyes: 2,
-//   hairColor: 'brown',
-//   eyesColor: 'brown',
-// };
-
-// const person2 = {
-//   firstName: 'Michael',
-//   lastName: 'Gill',
-//   age: 20,
-//   legs: 2,
-//   hands: 2,
-//   eyes: 2,
-//   hairColor: 'white',
-//   eyesColor: 'blue',
-// };
+console.log(user2.getFullName());
+console.log(user.__proto__ === user2.__proto__);

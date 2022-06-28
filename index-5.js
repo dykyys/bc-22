@@ -10,44 +10,60 @@
 */
 
 // class Blogger {
-//   constructor({ email, age, numberOfPosts, topics } = {}) {
-//     // this = {}
+//   #numberOfPosts;
+//   constructor({ email, age, numberOfPosts, topics }) {
 //     this.email = email;
 //     this.age = age;
-//     this.numberOfPosts = numberOfPosts;
+//     this.#numberOfPosts = numberOfPosts;
 //     this.topics = topics;
-//     // return this;
+//   }
+//   getInfo() {
+//     return `Blogger ${this.email} is ${this.age} years old and has ${
+//       this.#numberOfPosts
+//     } posts.`;
 //   }
 
-//   getInfo() {
-//     return `Blogger ${this.email} is ${this.age} years old and has ${this.numberOfPosts} posts.`;
+//   #checkValue(value) {
+//     // if (Number(value)) {
+//     //   return Number(value);
+//     // }
+//     // return 0;
+//     // return Number(value) ? Number(value) : 0;
+
+//     const isNumber = Number(value);
+//     return isNumber ? isNumber : 0;
 //   }
 
 //   updatePostCount(value) {
-//     this.numberOfPosts += value;
+//     this.#numberOfPosts += this.#checkValue(value);
 //   }
 // }
 
-// const mango = new Blogger({
-//   email: 'mango@mail.com',
-//   age: 24,
-//   numberOfPosts: 20,
-//   topics: ['tech', 'cooking'],
+// const r2d2 = new Blogger({
+//   email: 'r2d2@gmail.com',
+//   age: 21,
+//   numberOfPosts: 50,
+//   topics: ['wors', 'stars', 'lazer', 'dark size', 'stars ship'],
 // });
+// r2d2.updatePostCount('40');
+// console.log(r2d2.getInfo());
 
-// console.log(mango.getInfo()); // Blogger mango@mail.com is 24 years old and has 20 posts
-// mango.updatePostCount(5);
-// console.log(mango.getInfo()); // Blogger mango@mail.com is 24 years old and has 25 posts
-
-// const poly = new Blogger({
-//   email: 'poly@mail.com',
-//   age: 19,
-//   numberOfPosts: 17,
-//   topics: ['sports', 'gaming', 'health'],
+// const c3po = new Blogger({
+//   email: 'c3po@gmail.com',
+//   age: 22,
+//   numberOfPosts: 550,
+//   topics: [
+//     'wors',
+//     'stars',
+//     'lazer',
+//     'dark size',
+//     'stars ship',
+//     'languages',
+//     'glayder',
+//   ],
 // });
-// console.log(poly.getInfo()); // Blogger poly@mail.com is 19 years old and has 17 posts
-// poly.updatePostCount(4);
-// console.log(poly.getInfo()); // Blogger poly@mail.com is 19 years old and has 21 posts
+// c3po.updatePostCount(50);
+// console.log(c3po.getInfo());
 
 /*
 ? Напиши клас Storage, який створює об'єкти для управління складом товарів.
@@ -57,26 +73,36 @@
 ? addItem(item) - отримує новий товар та додає його до поточних.
 ? removeItem(item) - отримує товар і, якщо він є, видаляє його з поточних.
 */
-// class Storage {
-//   constructor(items = []) {
-//     this.items = items;
-//   }
 
-//   getItems() {
-//     return this.items;
-//   }
+class Storage {
+  constructor(items = []) {
+    this.items = items;
+  }
 
-//   addItem(item) {
-//     this.items.push(item);
-//   }
+  getItems() {
+    return this.items;
+  }
 
-//   removeItem(item) {
-//     if (this.items.includes(item)) {
-//       const itemIndex = this.items.indexOf(item);
-//       this.items.splice(itemIndex, 1);
-//     }
-//   }
-// }
+  #checkItem(item) {
+    return this.items.includes(item);
+  }
+
+  addItem(item) {
+    const inItems = this.#checkItem(item);
+
+    if (!inItems) {
+      this.items.unshift(item);
+    }
+  }
+  removeItem(newItem) {
+    this.items = this.items.filter((item) => item !== newItem);
+  }
+}
+
+// const stor1 = new Storage(['🍎', '🍋', '🍇', '🍑']);
+// stor1.addItem('🍌');
+// stor1.removeItem('🍋');
+// console.log(stor1.getItems());
 
 // const storage = new Storage(['🍎', '🍋', '🍇', '🍑']);
 
@@ -95,30 +121,37 @@
 */
 
 // class User {
-//   #userLogin;
+//   #login;
 //   #email;
-
-//   constructor({ login, email } = {}) {
-//     this.#userLogin = login;
+//   constructor({ login, email }) {
+//     this.#login = login;
 //     this.#email = email;
 //   }
 
 //   get email() {
 //     return this.#email;
 //   }
-
 //   set email(newEmail) {
 //     this.#email = newEmail;
 //   }
 
 //   get login() {
-//     return this.#userLogin;
+//     return this.#login;
 //   }
 
 //   set login(newLogin) {
-//     this.#userLogin = newLogin;
+//     this.#login = newLogin;
 //   }
 // }
+
+// const mango = new User({
+//   login: 'Mango',
+//   email: 'mango@dog.woof',
+// });
+// mango.email = 'mango@gmail.com';
+// console.log(mango.email);
+// mango.login = 'New Mango login';
+// console.log(mango.login);
 
 // const mango = new User({
 //   login: 'Mango',
@@ -153,89 +186,56 @@
 */
 
 // class Notes {
-//   static Priority = {
-//     LOW: 'low',
-//     NORMAL: 'normal',
-//     HIGH: 'high',
-//   };
-
+//   static PRIORITY = { LOW: 'low', NORMAL: 'normal', HIGH: 'high' };
 //   constructor(items = []) {
 //     this.items = items;
 //   }
 
-//   addNote(note) {
+//   getNotes() {
+//     return this.items;
+//   }
+
+//   addNotes(note) {
 //     this.items.push(note);
 //   }
 
-//   removeNote(text) {
-//     // 1 варіант
-//     // const note = this.items.find(el => el.text === text);
-//     // const indexOfNote = this.items.indexOf(note);
-
-//     // this.items.splice(indexOfNote, 1);
-
-//     // 2 варіант
-//     const indexOfNote = this.items.findIndex(el => el.text === text);
-
-//     this.items.splice(indexOfNote, 1);
+//   removeNotes(textToRemove) {
+//     this.items = this.items.filter(({ text }) => text !== textToRemove);
 //   }
-
-//   updatePriority(text, newPriority) {
-//     const note = this.items.find(el => el.text === text);
-
-//     note.priority = newPriority;
+//   updatePriority(textToUpdade, newPriority) {
+//     const itemToUpdate = this.items.find(({ text }) => text === textToUpdade);
+//     itemToUpdate.priority = newPriority;
 //   }
 // }
 
 // const myNotes = new Notes([]);
+// myNotes.addNotes({ text: 'My first notes', priority: Notes.PRIORITY.NORMAL });
+// myNotes.addNotes({ text: 'My second notes', priority: Notes.PRIORITY.NORMAL });
 
-// myNotes.addNote({ text: 'Моя перша замітка', priority: Notes.Priority.LOW });
-// console.log(myNotes.items);
-
-// myNotes.addNote({
-//   text: 'Моя друга замітка',
-//   priority: Notes.Priority.NORMAL,
-// });
-// console.log(myNotes.items);
-
-// myNotes.removeNote('Моя перша замітка');
-// console.log(myNotes.items);
-
-// myNotes.updatePriority('Моя друга замітка', Notes.Priority.HIGH);
-// console.log(myNotes.items);
+// myNotes.removeNotes('My first notes');
+// myNotes.updatePriority('My second notes', Notes.PRIORITY.HIGH);
+// console.log(myNotes.getNotes());
 
 /*
 ? Напишіть клас Toggle, який приймає об'єкт налаштувань {isOpen: boolean}
-? та оголошує одну властивість on - стан вкл/викл (true/false).
-? За промовчанням значення властивості on має бути false.
+? та оголошує одну властивість on/off вкл/викл (true/false).
+? За замовчанням значення властивості on має бути false.
 */
 
-// class Toggle {
-//   constructor({ isOpen = false } = {}) {
-//     this.on = isOpen;
-//   }
+class Toggle {
+  constructor({ isOpen = false } = {}) {
+    this.on = isOpen;
+  }
 
-//   toggle() {
-//     this.on = !this.on;
-//   }
-// }
+  toggle() {
+    this.on = !this.on;
+  }
+}
 
-// const firstToggle = new Toggle({ isOpen: true });
-
-// console.group('firstToggle');
-// console.log(firstToggle.on);
-
-// firstToggle.toggle();
-
-// console.log(firstToggle.on);
-// console.groupEnd('firstToggle');
-
-// const secondToggle = new Toggle();
-
-// console.group('secondToggle');
-// console.log(secondToggle.on);
-// secondToggle.toggle();
-// console.log(secondToggle.on);
-// console.groupEnd('secondToggle');
-// (function () {
-// })();
+const firstToggle = new Toggle();
+firstToggle.toggle(); //true
+firstToggle.toggle(); //false
+firstToggle.toggle(); //true
+firstToggle.toggle(); //false
+firstToggle.toggle(); //true
+console.log(firstToggle.on);
