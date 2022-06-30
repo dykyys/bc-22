@@ -1,13 +1,26 @@
 'use strict';
-const openPanelBtnEls = document.querySelectorAll('.js-accordion-btn');
 
-const onPanelBtnClick = function (event) {
-  const target = event.target;
-  const currentPanel = target.nextElementSibling;
+// const listBtnRef = document.querySelectorAll('.js-accordion-btn');
 
-  currentPanel.classList.toggle('active');
+// const handleBtnClick = event => {
+//   const { nextElementSibling } = event.target;
+//   nextElementSibling.classList.toggle('active');
+// };
+
+// listBtnRef.forEach(item => {
+//   item.addEventListener('click', handleBtnClick);
+// });
+
+const listRef = document.querySelector('.js-accordion-list');
+
+const handleClick = event => {
+  const { nodeName, nextElementSibling } = event.target;
+
+  if (nodeName !== 'BUTTON') {
+    return;
+  }
+
+  nextElementSibling.classList.toggle('active');
 };
 
-openPanelBtnEls.forEach(el => {
-  el.addEventListener('click', onPanelBtnClick);
-});
+listRef.addEventListener('click', handleClick);

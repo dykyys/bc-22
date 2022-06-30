@@ -10,17 +10,24 @@
  ?  - on*: onSubjectEvent
  */
 
-// https://picsum.photos/200/300
-const imgEl = document.querySelector('.js-img');
-const swapBtnEl = document.querySelector('.js-swap-btn');
-const removeListenerBtnEl = document.querySelector('.js-remove-listener');
+const changeBtnRef = document.querySelector('.js-swap-btn');
+const removeBtnRef = document.querySelector('.js-remove-listener');
+const imgRef = document.querySelector('.js-img');
 
-const onSwapBtnClick = function () {
-  imgEl.src = 'https://picsum.photos/200/300';
-  imgEl.alt = 'random image';
+const handleCkick = function (event) {
+  console.log('btn click');
+  imgRef.src = 'https://picsum.photos/200/300';
+  imgRef.alt = 'random image';
+  console.log('event', event);
+  this.style.background = 'lime';
 };
 
-swapBtnEl.addEventListener('click', onSwapBtnClick);
-removeListenerBtnEl.addEventListener('click', () => {
-  swapBtnEl.removeEventListener('click', onSwapBtnClick);
-});
+const removeListner = () => {
+  changeBtnRef.removeEventListener('click', handleCkick);
+};
+
+changeBtnRef.addEventListener('click', handleCkick);
+
+removeBtnRef.addEventListener('click', removeListner);
+
+// https://picsum.photos/200/300

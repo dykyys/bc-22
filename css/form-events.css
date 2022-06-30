@@ -20,3 +20,15 @@
   padding: 10px 26px;
   cursor: pointer;
 }
+
+.valid {
+  outline: 3px solid lime;
+}
+
+.invalid {
+  outline: 3px solid red;
+}
+
+.focus {
+  outline: 3px solid blue;
+}

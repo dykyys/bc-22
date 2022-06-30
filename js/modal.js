@@ -1,26 +1,41 @@
 'use strict';
 
-const backdropEl = document.querySelector('.js-backdrop');
-const openModalBtnEl = document.querySelector('.js-modal-open');
-const closeModalBtnEl = document.querySelector('.js-modal-close');
+const backdropRef = document.querySelector('.js-backdrop');
+const openBtnRef = document.querySelector('.js-modal-open');
+const closeBtnRef = document.querySelector('.js-modal-close');
+// const handleClick = () => {
+//   console.log('open modal');
+//   backdropRef.classList.toggle('is-open');
+// };
 
-const onOpenModalBtnClick = function () {
-  backdropEl.classList.add('is-open');
-  window.addEventListener('keydown', onEscBtnPush);
+// openBtnRef.addEventListener('click', handleClick);
+// closeBtnRef.addEventListener('click', handleClick);
+
+const handleOpenClick = () => {
+  console.log('open modal');
+  backdropRef.classList.toggle('is-open');
+  document.addEventListener('keydown', onEscPress);
 };
 
-const closeModal = function () {
-  backdropEl.classList.remove('is-open');
-  window.removeEventListener('keydown', onEscBtnPush);
-};
-
-const onEscBtnPush = function (event) {
-  if (event.code !== 'Escape') {
-    return;
+const handleBackdropClick = event => {
+  if (event.target === event.currentTarget) {
+    console.log('close window');
+    handleCloseClick();
   }
-
-  closeModal();
 };
 
-openModalBtnEl.addEventListener('click', onOpenModalBtnClick);
-closeModalBtnEl.addEventListener('click', closeModal);
+const handleCloseClick = () => {
+  backdropRef.classList.remove('is-open');
+  document.removeEventListener('keydown', onEscPress);
+};
+
+const onEscPress = event => {
+  console.log(event.key);
+  if (event.key === 'Escape') {
+    handleCloseClick();
+  }
+};
+
+openBtnRef.addEventListener('click', handleOpenClick);
+closeBtnRef.addEventListener('click', handleCloseClick);
+backdropRef.addEventListener('click', handleBackdropClick);

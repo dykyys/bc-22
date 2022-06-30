@@ -2,35 +2,53 @@
 /*
  *Події елементів форм. focus, blur, change, input, submit
  */
-// const formInputEl = document.querySelector('.js-username-input');
-// const userNameOutputEl = document.querySelector('.js-username-output');
-// const formCheckboxEl = document.querySelector('.js-policy-checkbox');
-// const formSubmitBtnEl = document.querySelector('.js-contact-form-submit');
-// const contactFormEl = document.querySelector('.js-contact-form');
 
-// formInputEl.addEventListener('focus', event => {
-//   event.target.style.outline = '2px solid teal';
-// });
+const formSubmitRef = document.querySelector('.js-contact-form');
+const formBtnRef = formSubmitRef.querySelector('.js-contact-form-submit');
+const formUserNameRef = formSubmitRef.querySelector('.js-username-input');
+const handleSubmit = event => {
+  event.preventDefault();
 
-// formInputEl.addEventListener('blur', event => {
-//   event.target.style.outline = 'none';
-// });
+  const {
+    elements: { username },
+  } = event.currentTarget;
 
-// formInputEl.addEventListener('input', event => {
-//   userNameOutputEl.textContent = event.target.value;
-// });
+  console.log(username.value);
 
-// formCheckboxEl.addEventListener('change', event => {
-//   if (event.target.checked && formInputEl.value) {
-//     formSubmitBtnEl.disabled = false;
-//     return;
-//   }
+  console.log('submit');
+};
 
-//   formSubmitBtnEl.disabled = true;
-// });
+const handleChange = event => {
+  const {
+    elements: { username, accept },
+  } = event.currentTarget;
 
-// contactFormEl.addEventListener('submit', event => {
-//   event.preventDefault();
+  if (accept.checked && username.value) {
+    formBtnRef.disabled = false;
+  }
+};
 
-//   console.log(event.target.elements.username.value);
-// });
+formSubmitRef.addEventListener('submit', handleSubmit);
+formSubmitRef.addEventListener('change', handleChange);
+
+// console.log(formUserNameRef);
+
+formUserNameRef.addEventListener('focus', event => {
+  //   console.log(event.currentTarget);
+  event.currentTarget.style.outline = '3px solid blue';
+});
+formUserNameRef.addEventListener('blur', event => {
+  const { value, dataset } = event.currentTarget;
+  if (value.length !== Number(dataset.length)) {
+    event.currentTarget.style.outline = '3px solid red';
+    // event.currentTarget.classList.add('invalid');
+    // event.currentTarget.classList.remove('valid');
+    // event.currentTarget.className = 'invalid';
+    return;
+  }
+  //   event.currentTarget.className = 'valid';
+  //   event.currentTarget.classList.add('valid');
+  //   event.currentTarget.classList.remove('invalid');
+  event.currentTarget.style.outline = '3px solid lime';
+  //   event.currentTarget.style.outline = 'none';
+});
