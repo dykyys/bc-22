@@ -64,6 +64,16 @@ ol {
   text-decoration: none;
 }
 
+.nav__link {
+  text-decoration: none;
+  padding: 10px 16px;
+  margin: 4px;
+  border-radius: 8px;
+  background: #4fb53f;
+  box-shadow: 0 10px 10px 0 #cccccc;
+  display: inline-block;
+}
+
 .container {
   max-width: 1200px;
   padding-left: 15px;

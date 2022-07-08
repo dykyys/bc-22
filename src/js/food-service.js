@@ -17,11 +17,13 @@ listRef.insertAdjacentHTML('beforeend', markup.join(''));
 
 initPage();
 
-themeToggleRef.addEventListener('input', event => {
+const toggleTheme = event => {
   const { checked } = event.target;
   document.body.className = checked ? Theme.DARK : Theme.LIGHT;
   localStorApi.save(THEME_STORAGE_KEY, checked);
-});
+};
+
+themeToggleRef.addEventListener('input', toggleTheme);
 
 function initPage() {
   const savedCheck = localStorApi.load(THEME_STORAGE_KEY);
