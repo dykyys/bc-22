@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import { format, formatDistance } from 'date-fns';
 
 import { uk } from 'date-fns/locale';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
@@ -45,7 +45,6 @@ const timer = {
       }
 
       const date = this.convertMs(delta);
-
       this.updateTextContent(date);
     }, 1000);
   },
