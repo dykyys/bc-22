@@ -16,27 +16,19 @@
  * Нехай кожен проміс своїм результатом повертає цю затримку та ім'я фреймворку, а при помилці ще й текст помилки 'Promise error'.
  */
 
-const frameworks = ['React', 'Vue', 'Angular'];
+// const frameworks = ['React', 'Vue', 'Angular'];
 
 // const getRandomDelay = () => Math.ceil(Math.random() * 2000);
 
 // const makePromise = framework => {
 //   return new Promise((resolve, reject) => {
 //     const delay = getRandomDelay();
-//     console.log(delay);
+
 //     setTimeout(() => {
-//       if (delay < 600) {
-//         resolve({
-//           framework,
-//           delay,
-//         });
-//       } else {
-//         reject({
-//           framework,
-//           delay,
-//           error: 'Promise error',
-//         });
+//       if (delay < 500) {
+//         resolve({ framework, delay });
 //       }
+//       reject({ framework, delay, error: 'Promise error' });
 //     }, delay);
 //   });
 // };
@@ -49,13 +41,15 @@ const frameworks = ['React', 'Vue', 'Angular'];
  * або результат помилки: `❌ ${error}! ${name} rejected in ${delay} ms`
  */
 
-// const handleSuccess = ({ framework, delay }) =>
+// const onSuccess = ({ framework, delay }) => {
 //   console.log(`✅ ${framework} won with ${delay} ms`);
+// };
 
-// const handleError = ({ framework, delay, error }) =>
+// const OnError = ({ framework, delay, error }) => {
 //   console.log(`❌ ${error}! ${framework} rejected in ${delay} ms`);
+// };
 
-// Promise.race(promises).then(handleSuccess).catch(handleError);
+// Promise.race(promises).then(onSuccess).catch(OnError);
 
 /*
  * За допомогою Promise.all отримайте масив результатів
@@ -63,15 +57,21 @@ const frameworks = ['React', 'Vue', 'Angular'];
  * Або з якою затримкою зареджектився один із них: `❌ ${error}! ${Framework_name} rejected in ${delay} ms`
  */
 
-// const handleSuccessAll = ({ framework, delay }) =>
-//   console.log(`✅ ${framework} fulfilled in ${delay} ms`);
+// const onSuccess = ({ framework, delay }) => {
+//   console.log(`✅ ${framework} won with ${delay} ms`);
+// };
 
-// const handleError = ({ framework, delay, error }) =>
+// const OnError = ({ framework, delay, error }) => {
 //   console.log(`❌ ${error}! ${framework} rejected in ${delay} ms`);
+// };
 
 // Promise.all(promises)
-//   .then(results => results.forEach(handleSuccessAll))
-//   .catch(err => handleError(err));
+//   .then(results => results.forEach(onSuccess))
+//   .catch(OnError);
+
+// Promise.all(promises)
+//   .then(results => results.forEach(item => onSuccess(item)))
+//   .catch(OnError);
 
 /*
  * За допомогою Promise.allSettled отримайте масив результатів.
@@ -84,18 +84,20 @@ const frameworks = ['React', 'Vue', 'Angular'];
  * {status: "rejected", reason: Error: an error}
  */
 
-// const handleSuccessAll = ({ framework, delay }) =>
-//   console.log(`✅ ${framework} fulfilled in ${delay} ms`);
+// const onSuccess = ({ framework, delay }) => {
+//   console.log(`✅ ${framework} won with ${delay} ms`);
+// };
 
-// const handleError = ({ framework, delay, error }) =>
+// const OnError = ({ framework, delay, error }) => {
 //   console.log(`❌ ${error}! ${framework} rejected in ${delay} ms`);
+// };
 
 // Promise.allSettled(promises).then(results =>
-//   results.forEach(({ status, value, reason }) => {
+//   results.forEach(({ status, reason, value }) => {
 //     if (status === 'fulfilled') {
-//       handleSuccessAll(value);
+//       onSuccess(value);
 //     } else {
-//       handleError(reason);
+//       OnError(reason);
 //     }
 //   })
 // );
@@ -110,15 +112,16 @@ const frameworks = ['React', 'Vue', 'Angular'];
  * }
  */
 
-// const handleSuccess = ({ framework, delay }) =>
+// const onSuccess = ({ framework, delay }) => {
 //   console.log(`✅ ${framework} won with ${delay} ms`);
+// };
 
-// const handleError = ({ framework, delay, error }) =>
+// const OnError = ({ framework, delay, error }) => {
 //   console.log(`❌ ${error}! ${framework} rejected in ${delay} ms`);
+// };
 
 // Promise.any(promises)
-//   .then(handleSuccess)
-//   .catch(({ message, errors }) => {
-//     console.error(message);
-//     errors.forEach(err => handleError(err));
+//   .then(onSuccess)
+//   .catch(({ errors }) => {
+//     errors.forEach(OnError);
 //   });

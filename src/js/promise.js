@@ -33,9 +33,9 @@
 // const promise = new Promise((resolve, reject) => {
 //   setTimeout(() => {
 //     if (isSuccess) {
-//       resolve('Success! Value passed to resolve function');
+//       resolve('Success!');
 //     } else {
-//       reject('Error! Error passed to reject function');
+//       reject('Error!');
 //     }
 //   }, 2000);
 // });
@@ -50,19 +50,43 @@
 //     value => {
 //       console.log('onResolve call inside promise.then()');
 //       console.log(value); // "Success! Value passed to resolve function"
-//     },
-//     // onReject will run third or not at all
-//     error => {
-//       console.log('onReject call inside promise.then()');
-//       console.log(error); // "Error! Error passed to reject function"
 //     }
+// onReject will run third or not at all
+//   error => {
+//     console.log('onReject call inside promise.then()');
+//     console.log(error); // "Error! Error passed to reject function"
+//   }
 //   )
 //   .catch(error => {
 //     console.log(error);
+//   })
+//   .finally(() => {
+//     console.log('The end');
 //   });
 
 // // Will run second
 // console.log('After promise.then()');
+
+// const promise = new Promise((resolve, reject) => {
+//   const isDone = Math.random();
+
+//   setTimeout(() => {
+//     if (isDone < 0.5) {
+//       resolve('Done');
+//     } else {
+//       reject('Error');
+//     }
+//   }, 1500);
+// });
+// promise.then(console.log).catch(console.log);
+// promise
+//   .then(value => {
+//     console.log(value);
+//   })
+//   .catch(error => console.log(error))
+//   .finally(() => {
+//     console.log('The end!');
+//   });
 
 // const promise = new Promise((resolve, reject) => {
 //   const isDone = Math.random();
@@ -109,17 +133,19 @@
 // const promise = new Promise((resolve, reject) => {
 //   resolve(1);
 //   //   reject(5);
+//   console.log('134');
 //   setTimeout(() => {
 //     resolve(2);
 //   }, 1000);
 // });
 
-// promise.then(result => {
-//   console.log(result);
-// });
-// //   .catch(err => {
-// //     console.log(err);
-// //   });
+// promise
+//   .then(result => {
+//     console.log(result);
+//   })
+//   .catch(err => {
+//     console.log(err);
+//   });
 
 //? TASK 02
 // Що буде у консолі
@@ -134,10 +160,16 @@
 //   })
 //   .then(data => {
 //     console.log(data); // undefined
+//     if (!data) {
+//       throw new Error('Error in then!');
+//     }
 //     return '2';
 //   })
 //   .then(data => {
 //     console.log(data); // 2
+//   })
+//   .catch(error => {
+//     console.log(error);
 //   });
 
 //? TASK 03
@@ -165,7 +197,7 @@
 /*
  * Є функція, яка генерує випадкові числа від 1 до 4.
  * Написати функцію, яка повертає проміс.
- * Зробіть так, щоб згенероване число було затримкою функції setTimeout в секундах.
+ * Зробіть так, щоб згенероване число було із затримкою функції setTimeout в секундах.
  * Оберніть все це в проміс, який у будь-якому разі повертає час затримки (і в resolve, і в reject).
  * Нехай проміс виконається успішно, якщо згенеровано 1 або 2 (`✅ Resolved after ${delay} sec`), і з помилкою - якщо 3 або 4 (`❌ Rejected after ${delay} sec`).
  */
@@ -173,24 +205,18 @@
 // const getRandomNumber = () => Math.floor(Math.random() * 4) + 1;
 
 // const makePromise = () => {
-//   return new Promise((resolve, reject) => {
+//   return new Promise((resolve, rejected) => {
 //     const delay = getRandomNumber();
 
 //     setTimeout(() => {
 //       if (delay <= 2) {
 //         resolve(delay);
-//       } else {
-//         reject(delay);
 //       }
+//       rejected(delay);
 //     }, delay * 1000);
 //   });
 // };
 
-// const handleSuccess = delay => console.warn(`✅ Resolved after ${delay} sec`);
-// const handleError = delay => console.error(`❌ Rejected after ${delay} sec`);
-
-// makePromise()
-//   .then(delay => handleSuccess(delay))
-//   .catch(err => handleError(err));
-
-// makePromise().then(handleSuccess).catch(handleError);
+// const onSuccess = delay => console.log(`✅ Resolved after ${delay} sec`);
+// const onError = delay => console.error(`❌ Rejected after ${delay} sec`);
+// makePromise().then(onSuccess).catch(onError);
