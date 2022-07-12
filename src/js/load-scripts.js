@@ -21,10 +21,10 @@
 //   document.body.append(script);
 
 //   script.addEventListener('load', () => {
-//     callback(script);
+//     return callback(script);
 //   });
 //   script.addEventListener('error', () => {
-//     callback(null, 'Error');
+//     return callback(null, 'Error');
 //   });
 // };
 // loadScript(
@@ -43,52 +43,52 @@
 //                 if (script) {
 //                   console.log(`${script.src} завантажився успішно`);
 //                 } else {
-//                   console.log(err);
+//                   console.log(error);
 //                 }
 //               }
 //             );
 //           } else {
-//             console.log(err);
+//             console.log(error);
 //           }
 //         }
 //       );
 //     } else {
-//       console.log(err);
+//       console.log(error);
 //     }
 //   }
 // );
 
 //? Рішення через проміси
-const loadScript = url => {
-  const script = document.createElement('script');
-  script.src = url;
-  document.body.append(script);
+// const loadScript = url => {
+//   const script = document.createElement('script');
+//   script.src = url;
+//   document.body.append(script);
 
-  return new Promise((resolve, rejected) => {
-    script.addEventListener('load', () => {
-      resolve(script);
-    });
-    script.addEventListener('error', () => {
-      rejected('Error');
-    });
-  });
-};
-loadScript('https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js')
-  .then(script => {
-    console.log(`${script.src} завантажився успішно`);
-    return loadScript(
-      'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'
-    );
-  })
-  .then(script => {
-    console.log(`${script.src} завантажився успішно`);
-    return loadScript(
-      'https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js'
-    );
-  })
-  .then(script => {
-    console.log(`${script.src} завантажився успішно`);
-  })
-  .catch(error => {
-    console.log(error);
-  });
+//   return new Promise((resolve, rejected) => {
+//     script.addEventListener('load', () => {
+//       resolve(script);
+//     });
+//     script.addEventListener('error', () => {
+//       rejected('Error');
+//     });
+//   });
+// };
+// loadScript('https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js')
+//   .then(script => {
+//     console.log(`${script.src} завантажився успішно`);
+//     return loadScript(
+//       'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'
+//     );
+//   })
+//   .then(script => {
+//     console.log(`${script.src} завантажився успішно`);
+//     return loadScript(
+//       'https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js'
+//     );
+//   })
+//   .then(script => {
+//     console.log(`${script.src} завантажився успішно`);
+//   })
+//   .catch(error => {
+//     console.log(error);
+//   });
