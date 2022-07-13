@@ -1,37 +1,27 @@
 'use strict';
 import 'material-icons/iconfont/material-icons.css';
-import { weatherCardTemplate } from '../templates/weather-card';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+
 import { fetchWeatherByCityName } from './weather-api';
+import { createWeatherMarkup } from '../templates/weather-card';
+import { setBackground } from './setBackground';
+const formRef = document.querySelector('.js-search-form');
 
-const weatherFormEl = document.querySelector('.js-search-form');
-const weatherWrapperEl = document.querySelector('.weather__wrapper');
-
-const convertSecondsToHoursAndMinutes = seconds => {
-  const date = new Date(seconds * 1000);
-
-  return `${date.getHours()}:${date.getMinutes()}`;
-};
-
-const onWeatherFormSubmit = event => {
+const handleSubmit = event => {
   event.preventDefault();
+  const { elements } = event.currentTarget;
+  const value = elements['user_country'].value.trim();
 
-  const searchQuery = event.currentTarget.elements['user_country'].value.trim();
-  console.log(searchQuery);
-  fetchWeatherByCityName(searchQuery)
-    .then(data => {
-      data.sys.sunset = convertSecondsToHoursAndMinutes(data.sys.sunset);
-      data.sys.sunrise = convertSecondsToHoursAndMinutes(data.sys.sunrise);
-      console.log(data);
-      weatherWrapperEl.innerHTML = weatherCardTemplate(data);
-    })
-    .catch(err => {
-      if (err.message === '400' || err.message === '404') {
-        console.log('Такого міста не існує');
-        return;
-      }
-
-      console.log(err);
+  if (!value) {
+    Notify.failure('Can not be empty!');
+    return;
+  }
+  setBackground(value);
+  fetchWeatherByCityName(value)
+    .then(createWeatherMarkup)
+    .catch(error => Notify.failure(`City ${value} not found!`), {
+      timeout: 1500,
     });
+  event.currentTarget.reset();
 };
-
-weatherFormEl.addEventListener('submit', onWeatherFormSubmit);
+formRef.addEventListener('submit', handleSubmit);

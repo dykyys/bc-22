@@ -1,23 +1,22 @@
 'use strict';
 // https://jsonplaceholder.typicode.com/
 
-// fetch('https://jsonplaceholder.typicode.com/users')
+// fetch('https://jsonplaceholder.typicode.com/usersdvdb')
 //   .then(response => {
-//     if (!response.ok) {
-//       throw new Error(response.status);
-//     }
+// if (!response.ok) {
+//   throw new Error('error in fetch');
+// }
 
-//     return response.json();
+// return response.json();
 //   })
 //   .then(data => {
 //     console.log(data);
 //   })
-//   .catch(err => {
-//     console.log(err);
-//   });
+//   .catch(error => console.log(error))
+//   .finally(() => console.log('the end!'));
 
 //? TASK 01
-// Створіть функцію getUsers(names), яка отримує на вхід масив логінов користувачів GitHub, робить запит на GitHub за інформацією про них та повертає масив об'єктів користувачів.
+// Створіть функцію getUsers(names), яка отримує на вхід масив логінів користувачів GitHub, робить запит на GitHub за інформацією про них та повертає масив об'єктів користувачів.
 // Інформація про користувача GitHub з логіном USERNAME доступна за посиланням: https://api.github.com/users/USERNAME.
 
 // Важливі деталі:
@@ -26,27 +25,30 @@
 // Запити не повині чекати завершеня один одного. Потрібно, щоб дані поверталися як можна швидше.
 // Якщо якийсь запит завершуєтся помилкою або вияволось, що даних о користувачеві немає, то функція повина повертати null в масиві результатів .
 
-// const BASE_URL = 'https://api.github.com';
-// const userLogins = ['luxplanjay', 'dykyys'];
+// const BASE_URL = 'https://api.github.com/users/';
+// const userLogins = [
+//   'luxplanjay',
+//   'dykyys',
+//   'qweeqer',
+//   'Maxwelllife',
+//   'xWinst',
+//   'AleksZhov',
+//   'gsmoff',
+// ];
 
 // const getUsers = names => {
-//   const promises = names.map(el => {
-//     return fetch(`${BASE_URL}/users/${el}`).then(response => {
+//   const promises = names.map(name => {
+//     return fetch(`${BASE_URL}${name}`).then(response => {
 //       if (!response.ok) {
-//         throw new Error(response.status);
+//         throw new Error('error in fetch');
 //       }
 
 //       return response.json();
 //     });
 //   });
-
 //   return Promise.all(promises);
 // };
 
 // getUsers(userLogins)
-//   .then(data => {
-//     console.log(data);
-//   })
-//   .catch(err => {
-//     console.log(err);
-//   });
+//   .then(data => console.log(data))
+//   .catch(error => console.error(error));
