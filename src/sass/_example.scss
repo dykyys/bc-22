@@ -12,7 +12,7 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial,
     sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
   height: 100vh;
-  background: linear-gradient(rgba(73, 70, 70, 0), rgba(107, 104, 104, 0.9));
+  // background: linear-gradient(rgba(73, 70, 70, 0), rgba(107, 104, 104, 0.9));
 }
 
 img {
@@ -217,7 +217,7 @@ ol {
   line-height: 1.4;
 }
 
-.load-more-btn {
+.load__more__btn {
   display: block;
   margin: 0 auto;
   min-width: 200px;
@@ -228,6 +228,10 @@ ol {
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 250ms linear;
+}
+
+.load__more__btn.is-hidden {
+  display: none;
 }
 
 .load-more-btn:hover,

@@ -1,19 +1,38 @@
 export class JsonplaceholderAPI {
-  #BASE_URL = 'https://jsonplaceholder.typicode.com';
+  #BASE_URL = 'https://jsonplaceholder.typicode.com/';
+  #page;
+  #limit;
+  #total;
 
   constructor() {
-    this.page = 1;
+    this.#page = 1;
+    this.#limit = 25;
+    this.#total = 100;
   }
 
-  fetchPosts() {
-    return fetch(`${this.#BASE_URL}/posts?_page=${this.page}&_limit=10`).then(
-      response => {
-        if (!response.ok) {
-          throw new Error(response.status);
-        }
-
-        return response.json();
+  getPosts() {
+    return fetch(
+      `${this.#BASE_URL}posts?_page=${this.#page}&_limit=${this.#limit}`
+    ).then(responce => {
+      if (!responce.ok) {
+        throw new Error(responce.statusText);
       }
-    );
+      return responce.json();
+    });
+  }
+  get page() {
+    return this.#page;
+  }
+
+  incrementPage() {
+    this.#page += 1;
+  }
+
+  hasMorePages() {
+    return this.#total / this.#limit > this.#page;
+  }
+
+  updateLimit(newLimit) {
+    this.#limit = newLimit > this.#total ? this.#total : newLimit;
   }
 }

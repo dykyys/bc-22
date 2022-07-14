@@ -1,66 +1,64 @@
 'use strict';
-// https://unsplash.com/
+
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { createGalleryCards } from '../templates/createGalleryCards';
+
 import { UnsplashAPI } from './unsplash-api';
 
-const searchFormEl = document.querySelector('.js-search-form');
-const galleryListEl = document.querySelector('.js-gallery');
-const loadMoreBtnEl = document.querySelector('.js-load-more');
+import { getRefs } from './getRefs';
+const refs = getRefs();
 
 const unsplashApi = new UnsplashAPI();
 
-const onSearchFormSubmit = event => {
+const handleSubmit = event => {
   event.preventDefault();
 
-  const searchQuery = event.currentTarget.elements['user-search-query'].value;
-  unsplashApi.query = searchQuery;
+  const { query } = event.currentTarget.elements;
+  searchValue = query.value.trim();
+
+  if (!searchValue) {
+    Notify.failure('enter text!');
+    return;
+  }
+
   unsplashApi.page = 1;
+  refs.list.innerHTML = '';
+  refs.loadMoreBtn.classList.add('is-hidden');
+
+  unsplashApi.query = searchValue;
 
   unsplashApi
-    .fetchPhotos()
-    .then(data => {
-      if (!data.results.length) {
-        console.log('Images not found!');
+    .getImages()
+    .then(({ total, total_pages: totalPages, results: images }) => {
+      if (images.length === 0) {
+        Notify.failure(`Images by ${searchValue} not found!`);
+        query.value = '';
         return;
       }
 
-      galleryListEl.innerHTML = createGalleryCards(data.results);
-      loadMoreBtnEl.classList.remove('is-hidden');
-    })
-    .catch(err => {
-      console.log(err);
+      const markup = createGalleryCards(images);
+      refs.list.insertAdjacentHTML('beforeend', markup);
+
+      if (unsplashApi.page === 1 && totalPages !== 1) {
+        refs.loadMoreBtn.classList.remove('is-hidden');
+      }
     });
 };
 
-const onLoadMoreBtnClick = event => {
-  unsplashApi.page += 1;
+const handleClickLoadMore = () => {
+  unsplashApi.updadePage();
 
   unsplashApi
-    .fetchPhotos()
-    .then(data => {
-      console.log(data);
-      if (unsplashApi.page === data.total_pages) {
-        loadMoreBtnEl.classList.add('is-hidden');
+    .getImages()
+    .then(({ total, total_pages: totalPages, results: images }) => {
+      if (unsplashApi.page >= totalPages) {
+        refs.loadMoreBtn.classList.add('is-hidden');
+        Notify.info('The end this collection!');
       }
 
-      galleryListEl.insertAdjacentHTML(
-        'beforeend',
-        createGalleryCards(data.results)
-      );
-    })
-    .catch(err => {
-      console.log(err);
+      const markup = createGalleryCards(images);
+      refs.list.insertAdjacentHTML('beforeend', markup);
     });
 };
-
-searchFormEl.addEventListener('submit', onSearchFormSubmit);
-loadMoreBtnEl.addEventListener('click', onLoadMoreBtnClick);
-
-function createGalleryCards(cards) {
-  return cards
-    .map(
-      ({ urls, alt_description }) => `<li class="gallery__item">
-    <img src="${urls.small}" alt="${alt_description}" class="gallery-img">
-</li>`
-    )
-    .join('');
-}
+refs.loadMoreBtn.addEventListener('click', handleClickLoadMore);
+refs.form.addEventListener('submit', handleSubmit);

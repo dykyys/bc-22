@@ -1,45 +1,48 @@
+// 'use strict';
 // https://jsonplaceholder.typicode.com/
-
 import { JsonplaceholderAPI } from './jsonplaceholder-api';
+import { createPostsCards } from '../templates/createPostsCards';
 
-const postsWrapperEl = document.querySelector('.js-posts');
-const loadMoreBtnEl = document.querySelector('.js-load-more');
+const postsListRef = document.querySelector('.js-posts');
+const loadMoreBtn = document.querySelector('.js-load-more');
 
 const jsonplaceholderApi = new JsonplaceholderAPI();
 
+jsonplaceholderApi.updateLimit(1000);
+
+console.log(jsonplaceholderApi);
+
 jsonplaceholderApi
-  .fetchPosts()
+  .getPosts()
   .then(data => {
-    postsWrapperEl.innerHTML = createPostsCards(data).join('');
+    if (jsonplaceholderApi.page === 1) {
+      loadMoreBtn.classList.remove('is-hidden');
+    }
+    const markup = createPostsCards(data).join('');
+    postsListRef.insertAdjacentHTML('beforeend', markup);
   })
-  .catch(err => {
-    console.log(err);
+  .catch(error => {
+    console.log(error);
   });
 
-const onLoadMoreBtnClick = event => {
-  jsonplaceholderApi.page += 1;
+const handleClickLoadMore = () => {
+  jsonplaceholderApi.incrementPage();
+
+  const hasMorePages = jsonplaceholderApi.hasMorePages();
+
+  if (!hasMorePages) {
+    loadMoreBtn.classList.add('is-hidden');
+  }
 
   jsonplaceholderApi
-    .fetchPosts()
+    .getPosts()
     .then(data => {
-      postsWrapperEl.insertAdjacentHTML(
-        'beforeend',
-        createPostsCards(data).join('')
-      );
+      const markup = createPostsCards(data);
+      postsListRef.insertAdjacentHTML('beforeend', markup.join(''));
     })
-    .catch(err => {
-      console.log(err);
+    .catch(error => {
+      console.log(error);
     });
 };
 
-loadMoreBtnEl.addEventListener('click', onLoadMoreBtnClick);
-
-function createPostsCards(cards) {
-  return cards.map(
-    ({ title, body, id }) => `<li class="posts__item">
-    <h2 class="posts__title">${title}</h2>
-    <p class="posts__text">${body}</p>
-    <p class="posts__id">id: ${id}</p>
-</li>`
-  );
-}
+loadMoreBtn.addEventListener('click', handleClickLoadMore);
