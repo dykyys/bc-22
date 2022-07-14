@@ -9,7 +9,6 @@ export class UnsplashAPI {
   #BASE_URL = 'https://api.unsplash.com/search/photos';
   #API_KEY = 'LxvKVGJqiSe6NcEVZOaLXC-f2JIIWZaq_o0WrF8mwJc';
 
-  #page;
   #query;
 
   #searchParams = new URLSearchParams({
@@ -20,15 +19,12 @@ export class UnsplashAPI {
   });
 
   constructor() {
-    this.#page = 1;
     this.#query = '';
   }
 
-  getImages(query) {
+  getPopularImages(page) {
     return fetch(
-      `${this.#BASE_URL}?page=${this.#page}&query=${this.#query}&${
-        this.#searchParams
-      }`
+      `${this.#BASE_URL}?page=${page}&query=bad&${this.#searchParams}`
     ).then(response => {
       if (!response.ok) {
         throw new Error(response.statusText);
@@ -37,16 +33,17 @@ export class UnsplashAPI {
     });
   }
 
-  get page() {
-    return this.#page;
-  }
-
-  set page(newPage) {
-    this.#page = newPage;
-  }
-
-  updadePage() {
-    this.#page += 1;
+  getImages(page) {
+    return fetch(
+      `${this.#BASE_URL}?page=${page}&query=${this.#query}&${
+        this.#searchParams
+      }`
+    ).then(response => {
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      return response.json();
+    });
   }
 
   set query(newQuery) {

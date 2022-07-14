@@ -1,11 +1,20 @@
 'use strict';
-
+import Pagination from 'tui-pagination';
+import 'tui-pagination/dist/tui-pagination.min.css';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { createGalleryCards } from '../templates/createGalleryCards';
-
 import { UnsplashAPI } from './unsplash-api';
-
 import { getRefs } from './getRefs';
+
+const pagination = new Pagination('#tui-pagination-container', {
+  totalItems: 0,
+  itemsPerPage: 30,
+  visiblePages: 5,
+  page: 1,
+});
+
+const page = pagination.getCurrentPage();
+
 const refs = getRefs();
 
 const unsplashApi = new UnsplashAPI();
@@ -21,44 +30,61 @@ const handleSubmit = event => {
     return;
   }
 
-  unsplashApi.page = 1;
-  refs.list.innerHTML = '';
-  refs.loadMoreBtn.classList.add('is-hidden');
+  pagination.off('afterMove', popular);
 
+  refs.list.innerHTML = '';
   unsplashApi.query = searchValue;
 
   unsplashApi
-    .getImages()
+    .getImages(page)
     .then(({ total, total_pages: totalPages, results: images }) => {
       if (images.length === 0) {
         Notify.failure(`Images by ${searchValue} not found!`);
         query.value = '';
         return;
       }
+      pagination.reset(total);
 
-      const markup = createGalleryCards(images);
-      refs.list.insertAdjacentHTML('beforeend', markup);
+      addGalleryMarkup(images);
 
-      if (unsplashApi.page === 1 && totalPages !== 1) {
-        refs.loadMoreBtn.classList.remove('is-hidden');
-      }
+      pagination.on('afterMove', eventSearchPagination);
     });
 };
 
-const handleClickLoadMore = () => {
-  unsplashApi.updadePage();
+refs.form.addEventListener('submit', handleSubmit);
+
+unsplashApi
+  .getPopularImages(page)
+  .then(({ total, total_pages: totalPages, results: images }) => {
+    pagination.reset(total);
+    addGalleryMarkup(images);
+  });
+
+pagination.on('afterMove', popular);
+
+function popular(event) {
+  const currentPage = event.page;
+  unsplashApi.getPopularImages(currentPage).then(({ results: images }) => {
+    addGalleryMarkup(images);
+  });
+}
+
+function eventSearchPagination(event) {
+  const currentPage = event.page;
 
   unsplashApi
-    .getImages()
+    .getImages(currentPage)
     .then(({ total, total_pages: totalPages, results: images }) => {
-      if (unsplashApi.page >= totalPages) {
-        refs.loadMoreBtn.classList.add('is-hidden');
-        Notify.info('The end this collection!');
+      if (images.length === 0) {
+        Notify.failure(`Images by ${searchValue} not found!`);
+        query.value = '';
+        return;
       }
-
-      const markup = createGalleryCards(images);
-      refs.list.insertAdjacentHTML('beforeend', markup);
+      addGalleryMarkup(images);
     });
-};
-refs.loadMoreBtn.addEventListener('click', handleClickLoadMore);
-refs.form.addEventListener('submit', handleSubmit);
+}
+
+function addGalleryMarkup(images) {
+  const markup = createGalleryCards(images);
+  refs.list.insertAdjacentHTML('beforeend', markup);
+}

@@ -238,3 +238,29 @@ ol {
 .load-more-btn:focus {
   background-color: #2c3e50;
 }
+
+#tui-pagination-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#tui-pagination-container .tui-page-btn {
+  width: 44px;
+  height: 44px;
+  border: 1px solid #2c3e50;
+  background: #34495e;
+  color: #834dbe;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-weight: 500;
+  border: none;
+  font-size: 16px;
+}
+
+#tui-pagination-container .tui-page-btn.tui-is-selected {
+  background-color: fuchsia;
+  color: #c71f5f;
+}
