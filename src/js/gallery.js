@@ -1,4 +1,7 @@
 'use strict';
+//https://nhn.github.io/tui.pagination/latest/Pagination#event-beforeMove
+//https://github.com/nhn/tui.pagination/blob/production/docs/getting-started.md
+//https://github.com/nhn/tui.pagination#-documents
 import Pagination from 'tui-pagination';
 import 'tui-pagination/dist/tui-pagination.min.css';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
@@ -6,18 +9,20 @@ import { createGalleryCards } from '../templates/createGalleryCards';
 import { UnsplashAPI } from './unsplash-api';
 import { getRefs } from './getRefs';
 
-const pagination = new Pagination('#tui-pagination-container', {
+const paganation = new Pagination('#tui-pagination-container', {
   totalItems: 0,
   itemsPerPage: 30,
   visiblePages: 5,
   page: 1,
 });
 
-const page = pagination.getCurrentPage();
+const page = paganation.getCurrentPage();
 
 const refs = getRefs();
 
 const unsplashApi = new UnsplashAPI();
+
+paganation.on('afterMove', popular);
 
 const handleSubmit = event => {
   event.preventDefault();
@@ -30,7 +35,8 @@ const handleSubmit = event => {
     return;
   }
 
-  pagination.off('afterMove', popular);
+  paganation.off('afterMove', popular);
+  paganation.off('afterMove', eventSearchPagination);
 
   refs.list.innerHTML = '';
   unsplashApi.query = searchValue;
@@ -39,15 +45,25 @@ const handleSubmit = event => {
     .getImages(page)
     .then(({ total, total_pages: totalPages, results: images }) => {
       if (images.length === 0) {
+        refs.paganation.classList.add('is-hidden');
         Notify.failure(`Images by ${searchValue} not found!`);
         query.value = '';
+
         return;
       }
-      pagination.reset(total);
+
+      // const isHidden = document.querySelector('.tui-pagination.is-hidden');
+      // if (isHidden) {
+      //   isHidden.classList.remove('is-hidden');
+      // }
+
+      refs.paganation.classList.remove('is-hidden'); //😎
+
+      paganation.reset(total);
 
       addGalleryMarkup(images);
 
-      pagination.on('afterMove', eventSearchPagination);
+      paganation.on('afterMove', eventSearchPagination);
     });
 };
 
@@ -56,11 +72,19 @@ refs.form.addEventListener('submit', handleSubmit);
 unsplashApi
   .getPopularImages(page)
   .then(({ total, total_pages: totalPages, results: images }) => {
-    pagination.reset(total);
+    if (images.length === 0) {
+      Notify.failure(`Images by ${searchValue} not found!`);
+      query.value = '';
+      // refs.paganation.classList.add('is-hidden');
+      return;
+    }
+
+    refs.paganation.classList.remove('is-hidden'); //😎
+
+    paganation.reset(total);
+
     addGalleryMarkup(images);
   });
-
-pagination.on('afterMove', popular);
 
 function popular(event) {
   const currentPage = event.page;
@@ -85,6 +109,7 @@ function eventSearchPagination(event) {
 }
 
 function addGalleryMarkup(images) {
+  // refs.list.innerHTML = '';
   const markup = createGalleryCards(images);
   refs.list.insertAdjacentHTML('beforeend', markup);
 }

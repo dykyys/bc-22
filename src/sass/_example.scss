@@ -264,3 +264,7 @@ ol {
   background-color: fuchsia;
   color: #c71f5f;
 }
+
+#tui-pagination-container.is-hidden {
+  display: none;
+}
