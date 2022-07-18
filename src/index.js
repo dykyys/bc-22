@@ -104,12 +104,12 @@ refs.list.addEventListener('click', event => {
     });
 });
 
-// const arrId = [21, 22, 23];
+// const arrId = [13, 12, 11, 10, 9];
 // const promises = arrId.map(id => ContactsAPI.deleteContact(id));
 
 // // console.log(promises);
 
-// Promise.race(promises)
+// Promise.all(promises)
 //   .then(data => {
 //     console.log(data);
 //   })
