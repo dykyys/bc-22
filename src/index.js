@@ -1,106 +1,116 @@
+//https://ru.wikipedia.org/wiki/UTF-8#:~:text=Unicode%20Transformation%20Format%2C%208%2Dbit,%D1%81%207%2D%D0%B1%D0%B8%D1%82%D0%BD%D0%BE%D0%B9%20%D0%BA%D0%BE%D0%B4%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%BE%D0%B9%20ASCII.
+//https://ru.wikipedia.org/wiki/%D0%A1%D0%BF%D0%B8%D1%81%D0%BE%D0%BA_MIME-%D1%82%D0%B8%D0%BF%D0%BE%D0%B2
+
 import 'material-icons/iconfont/material-icons.css';
-// import { formatDistance } from 'date-fns';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { getRefs } from './js/getRers';
+// import {
+//   getContacts,
+//   getContactById,
+//   createContact,
+//   updateContact,
+//   updateContactPATCH,
+//   deleteContact,
+// } from './js/service/contact.service';
+import * as ContactsAPI from './js/service/contact.service';
+import { createListContacts } from './templates/createListContacts';
+import { createCardcontact } from './templates/createCardcontact';
 
-// import * as ContactsService from './js/service/contact.service';
-// const listRef = document.querySelector('.contacts-container');
+const refs = getRefs();
 
+//=========================
 // GET -> /contacts
-// ContactsService.fetchContacts()
-//   .then(contacts => {
-//     const m = createListcontacts(contacts);
-//     listRef.innerHTML = m.join('');
+// getContacts()
+//   .then(data => {
+//     const markup = createListcontacts(data);
+//     listRef.innerHTML = markup.join('');
 //   })
-//   .catch(error => console.error(error.message));
-
+//   .catch(error => console.log(error));
+//=========================
 // GET -> /contacts/:id
-// ContactsService.getContact(26)
-//   .then(contact => console.log(contact))
-//   .catch(error => console.error(error.message));
-
+// getContactById(15)
+//   .then(data => {
+//     const markup = createCardcontact(data);
+//     listRef.innerHTML = markup;
+//   })
+//   .catch(error => console.log(error));
+//=========================
 // POST -> /contacts
+// const mango = {
+//   name: 'Mango',
+//   email: 'mango@gmail.com',
+//   phone: '55555555',
+// };
+//  createContact(mango).then(data => {
+//    Notify.success(`${data.name} created!!!`);
+//  });
+//=========================
+//PUT -> /contacts/:id
 // const newContact = {
-//   name: 'Ellie',
-//   email: 'Ellie@mail.com',
-//   number: '655-496-6787',
+//   name: 'Mango people net',
+//   phone: '05000000000',
+//   email: 'mangoPeopleNet@gmail.com',
+// };
+// updateContact(55, newContact)
+//   .then(({ name }) => {
+//     Notify.success(`${name} was updated!!!`);
+//   })
+//   .catch(error => console.log(error));
+
+ContactsAPI.getContacts()
+  .then(data => {
+    const markup = createListContacts([...data].reverse());
+    refs.list.innerHTML = markup.join('');
+    // Notify.success(`All contacts update!!!`);
+  })
+  .catch(error => console.log(error));
+
+// const newContact = {
+//   id: 51,
+//   name: 'Poly',
 // };
 
-// ContactsService.createContact(newContact)
-//   .then(contact => console.log(contact))
-//   .catch(error => console.error(error.message));
+// refs.update.addEventListener('click', () => {
+//   ContactsAPI.updateContact(newContact)
+//     .then(({ name }) => {
+//       Notify.success(`${name} was updated!!!`);
+//     })
+//     .catch(error => console.log(error));
+// });
 
-// PUT -> /contacts/:id
-// const updatedContact = {
-//   name: 'Kylie Miller',
-// };
+// refs.delete.addEventListener('click', () => {
+//   console.log('del');
+//   ContactsAPI.deleteContact(52)
+//     .then(({ name }) => {
+//       Notify.info(`${name} was deleted`);
+//     })
+//     .catch(error => {
+//       Notify.failure('Something wrong!');
+//     });
+// });
 
-// ContactsService.updateContact(6, updatedContact)
-//   .then(contact => console.log(contact))
-//   .catch(error => console.error(error.message));
+refs.list.addEventListener('click', event => {
+  if (event.target.nodeName !== 'BUTTON') return;
+  const card = event.target.closest('.js-contact-card');
+  console.log(card);
+  card.remove();
 
-// DELETE /contacts/:id
+  ContactsAPI.deleteContact(card.dataset.id)
+    .then(({ name }) => {
+      Notify.info(`${name} was deleted`, { position: 'left-top' });
+    })
+    .catch(error => {
+      Notify.failure('Something wrong!', { position: 'left-top' });
+    });
+});
 
-// ContactsService.removeContact(6)
-//   .then(contact => console.log(contact))
-//   .catch(error => console.error(error.message));
+// const arrId = [21, 22, 23];
+// const promises = arrId.map(id => ContactsAPI.deleteContact(id));
 
-// const arrId = [9, 10, 11];
-// const promises = arrId.map(id => ContactsService.removeContact(id));
+// // console.log(promises);
 
-// Promise.all(promises)
-//   .then(data => data.forEach(res => console.log(res)))
-//   .catch(err => console.error(err));
-
-// Promise.all([
-//   ContactsService.removeContact(13),
-//   ContactsService.removeContact(14),
-// ])
-//   .then(data => data.forEach(res => console.log(res)))
-//   .catch(err => console.error(err));
-
-// function createListcontacts(contacts) {
-//   return contacts.map(({ name, phone, email, id, createdAt }) => {
-//     return `<div class="col-md-6">
-//       <div class="card mb-2 shadow">
-//         <div class="d-flex justify-content-between pb-3 border-bottom">
-//           <div class="d-flex flex-row align-items-center gap-1">
-//             <div class="icon">
-//                <span class="material-icons-outlined"> contacts </span>
-//             </div>
-//             <div class="ms-2 c-details">
-//               <h2 class="h5 mb-0 fw-bold">${id} - ${name}</h2>
-//               <span>${form(createdAt)}</span>
-//             </div>
-//           </div>
-//           <button type="button" class="btn-close" aria-label="Close"></button>
-//         </div>
-//         <div class="mt-2">
-//           <ul class="list-group list-group-flush">
-//             <li class="list-group-item d">
-//               <a
-//                 href="tel:+"
-//                 class="d-flex align-items-center text-secondary text-decoration-none nav-link"
-//                 ><span class="material-icons-round me-2"> phone </span> ${phone}</a
-//               >
-//             </li>
-//             <li class="list-group-item">
-//               <a
-//                 href="mailto:"
-//                 class="d-flex align-items-center text-secondary text-decoration-none nav-link"
-//                 ><span class="material-icons-round me-2">
-//                   alternate_email
-//                 </span>
-//                 ${email}</a
-//               >
-//             </li>
-//           </ul>
-//         </div>
-//       </div>
-//     </div>`;
-//   });
-// }
-
-// function form(data) {
-//   return formatDistance(new Date(), new Date(data), {
-//     addSuffix: true,
-//   });
-// }
+// Promise.race(promises)
+//   .then(data => {
+//     console.log(data);
+//   })
+//   .catch(error => console.log(error));
