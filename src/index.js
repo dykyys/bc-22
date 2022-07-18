@@ -1,17 +1,8 @@
-//https://ru.wikipedia.org/wiki/UTF-8#:~:text=Unicode%20Transformation%20Format%2C%208%2Dbit,%D1%81%207%2D%D0%B1%D0%B8%D1%82%D0%BD%D0%BE%D0%B9%20%D0%BA%D0%BE%D0%B4%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%BE%D0%B9%20ASCII.
-//https://ru.wikipedia.org/wiki/%D0%A1%D0%BF%D0%B8%D1%81%D0%BE%D0%BA_MIME-%D1%82%D0%B8%D0%BF%D0%BE%D0%B2
-
 import 'material-icons/iconfont/material-icons.css';
+import throttle from 'lodash.throttle';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { getRefs } from './js/getRers';
-// import {
-//   getContacts,
-//   getContactById,
-//   createContact,
-//   updateContact,
-//   updateContactPATCH,
-//   deleteContact,
-// } from './js/service/contact.service';
+
 import * as ContactsAPI from './js/service/contact.service';
 import { createListContacts } from './templates/createListContacts';
 import { createCardcontact } from './templates/createCardcontact';
@@ -56,6 +47,17 @@ const refs = getRefs();
 //     Notify.success(`${name} was updated!!!`);
 //   })
 //   .catch(error => console.log(error));
+//***************** */
+
+// const getContacts = async () => {
+//   try {
+//     const data = await ContactsAPI.getContacts();
+//     const markup = createListContacts([...data].reverse());
+//     refs.list.innerHTML = markup.join('');
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 
 ContactsAPI.getContacts()
   .then(data => {
@@ -64,6 +66,16 @@ ContactsAPI.getContacts()
     // Notify.success(`All contacts update!!!`);
   })
   .catch(error => console.log(error));
+/******************* */
+
+// document.addEventListener('DOMContentLoaded', getContacts);
+
+// .then(data => {
+//   const markup = createListContacts([...data].reverse());
+//   refs.list.innerHTML = markup.join('');
+//   // Notify.success(`All contacts update!!!`);
+// })
+// .catch(error => console.log(error));
 
 // const newContact = {
 //   id: 51,
@@ -92,7 +104,7 @@ ContactsAPI.getContacts()
 refs.list.addEventListener('click', event => {
   if (event.target.nodeName !== 'BUTTON') return;
   const card = event.target.closest('.js-contact-card');
-  console.log(card);
+
   card.remove();
 
   ContactsAPI.deleteContact(card.dataset.id)
@@ -104,13 +116,19 @@ refs.list.addEventListener('click', event => {
     });
 });
 
-// const arrId = [13, 12, 11, 10, 9];
-// const promises = arrId.map(id => ContactsAPI.deleteContact(id));
+const handleSearchInput = async event => {
+  const searchValue = event.target.value.trim().toLowerCase();
 
-// // console.log(promises);
+  const data = await ContactsAPI.getContacts();
 
-// Promise.all(promises)
-//   .then(data => {
-//     console.log(data);
-//   })
-//   .catch(error => console.log(error));
+  const filteredContacts = data.filter(({ name }) => {
+    return name.toLowerCase().includes(searchValue);
+  });
+
+  refs.list.innerHTML = '';
+
+  const markup = createListContacts(filteredContacts);
+  refs.list.innerHTML = markup.join('');
+};
+
+refs.searchForm.addEventListener('input', throttle(handleSearchInput, 300));

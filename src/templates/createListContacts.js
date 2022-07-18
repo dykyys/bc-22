@@ -10,7 +10,7 @@ export function createListContacts(contacts) {
                <span class="material-icons-outlined"> contacts </span>
             </div>
             <div class="ms-2 c-details">
-              <h2 class="h5 mb-0 fw-bold">${id} - ${name}</h2>
+              <h2 class="h5 mb-0 fw-bold js-name">${id} - ${name}</h2>
               <span>${formatDateCreate(createdAt)}</span>
             </div>
           </div>

@@ -11,19 +11,17 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="./sass/index.scss" />
+    <script type="module" src="./index.js"></script>
+    <script type="module" src="./js/form.js"></script>
   </head>
-  <body>
+  <body style="background: linear-gradient(to right, #b2bfc2, #e6e7db)">
     <!-- Так добавляются фрагменты в главные HTML-файлы страниц. -->
 
-    <div class="container">
-      <ol class="navigation">
-        <li class="navigation__item">
-          <a href="./contacts.html" class="nav__link">contacts</a>
-        </li>
-        <li class="navigation__item">
-          <a href="./gallery.html" class="nav__link">Gallery</a>
-        </li>
-      </ol>
-    </div>
+    <include src="./partials/header.html"></include>
+
+    <section class="pt-5 pb-5">
+      <include src="./partials/card.html"></include>
+    </section>
+    <include src="./partials/form.html"></include>
   </body>
 </html>
