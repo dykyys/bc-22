@@ -3,6 +3,7 @@ export const getRefs = () => ({
   create: document.querySelector('.js-create'),
   refresh: document.querySelector('.js-refresh'),
   update: document.querySelector('.js-update'),
+  info: document.querySelector('.js-info'),
   listBtnClose: document.querySelectorAll('.btn-close'),
   form: document.querySelector('.js-contact-form'),
   openModalBtn: document.querySelector('[data-modal-open]'),

@@ -10,7 +10,7 @@ const refs = getRefs();
 const LOCAL_STORAGE_KEY = 'user-data';
 initForm();
 
-const handleSabmit = event => {
+const handleSabmit = async event => {
   event.preventDefault();
   const { name, email, phone } = event.target.elements;
 
@@ -27,21 +27,23 @@ const handleSabmit = event => {
     userData[name] = value;
   });
 
-  createContact(userData)
-    .then(contact => {
-      const markup = createCardContact(contact);
-      refs.list.insertAdjacentHTML('afterbegin', markup);
-      Notify.success(`${contact.name} was created!!!`, {
-        position: 'left-top',
-      });
-      toggleModal();
-    })
-    .catch(error => console.log(error));
-  // .finally(toggleModal);
+  try {
+    const contact = await createContact(userData);
 
-  event.currentTarget.reset();
+    const markup = createCardContact(contact);
+    refs.list.insertAdjacentHTML('afterbegin', markup);
+
+    Notify.success(`${contact.name} was created!!!`, {
+      position: 'left-top',
+    });
+  } catch (error) {
+    console.log(error);
+  } finally {
+    toggleModal();
+  }
+
+  event.target.reset();
   localStorApi.remove(LOCAL_STORAGE_KEY);
-  // Notify.success("Дякуємо за зворотній зв'язок!");
 };
 
 const handleInput = event => {

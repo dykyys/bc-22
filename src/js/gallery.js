@@ -7,8 +7,8 @@ import { getRefs } from './getGalleryRefs';
 const refs = getRefs();
 
 const unsplashApi = new UnsplashAPI();
-console.log(refs);
-const handleSubmit = event => {
+
+const handleSubmit = async event => {
   event.preventDefault();
 
   const { query } = event.currentTarget.elements;
@@ -25,38 +25,43 @@ const handleSubmit = event => {
 
   unsplashApi.query = searchValue;
 
-  unsplashApi
-    .getImages()
-    .then(({ total, total_pages: totalPages, results: images }) => {
-      if (images.length === 0) {
-        Notify.failure(`Images by ${searchValue} not found!`);
-        query.value = '';
-        return;
-      }
+  try {
+    const { total_pages: totalPages, results: images } =
+      await unsplashApi.getImages();
 
-      const markup = createGalleryCards(images);
-      refs.list.insertAdjacentHTML('beforeend', markup);
+    if (images.length === 0) {
+      Notify.failure(`Images by ${searchValue} not found!`);
+      query.value = '';
+      return;
+    }
 
-      if (unsplashApi.page === 1 && totalPages !== 1) {
-        refs.loadMoreBtn.classList.remove('is-hidden');
-      }
-    });
+    const markup = createGalleryCards(images);
+    refs.list.insertAdjacentHTML('beforeend', markup);
+
+    if (unsplashApi.page === 1 && totalPages !== 1) {
+      refs.loadMoreBtn.classList.remove('is-hidden');
+    }
+  } catch (error) {
+    Notify.failure(`Error!!! ${error.message}`);
+  }
 };
 
-const handleClickLoadMore = () => {
+const handleClickLoadMore = async () => {
   unsplashApi.updadePage();
 
-  unsplashApi
-    .getImages()
-    .then(({ total, total_pages: totalPages, results: images }) => {
-      if (unsplashApi.page >= totalPages) {
-        refs.loadMoreBtn.classList.add('is-hidden');
-        Notify.info('The end this collection!');
-      }
+  try {
+    const { total_pages: totalPages, results: images } =
+      await unsplashApi.getImages();
+    if (unsplashApi.page >= totalPages) {
+      refs.loadMoreBtn.classList.add('is-hidden');
+      Notify.info('The end this collection!');
+    }
 
-      const markup = createGalleryCards(images);
-      refs.list.insertAdjacentHTML('beforeend', markup);
-    });
+    const markup = createGalleryCards(images);
+    refs.list.insertAdjacentHTML('beforeend', markup);
+  } catch (error) {
+    Notify.failure(`Error!!! ${error.message}`);
+  }
 };
 refs.loadMoreBtn.addEventListener('click', handleClickLoadMore);
 refs.form.addEventListener('submit', handleSubmit);

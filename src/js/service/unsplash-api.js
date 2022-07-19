@@ -1,50 +1,47 @@
-// import axios from 'axios';
+import axios from 'axios';
 
-// axios.defaults.baseURL = 'https://api.unsplash.com/search/photos';
-// axios.defaults.headers.Authorization =
-//   'Client-ID LxvKVGJqiSe6NcEVZOaLXC-f2JIIWZaq_o0WrF8mwJc';
-
-const searchParams = new URLSearchParams({
-  per_page: 30,
-  client_id: 'LxvKVGJqiSe6NcEVZOaLXC-f2JIIWZaq_o0WrF8mwJc',
-  color: 'black',
-  orientation: 'portrait',
-});
+axios.defaults.baseURL = 'https://api.unsplash.com/search';
+axios.defaults.headers.Authorization =
+  'Client-ID LxvKVGJqiSe6NcEVZOaLXC-f2JIIWZaq_o0WrF8mwJc';
 
 export class UnsplashAPI {
-  #BASE_URL = 'https://api.unsplash.com/search/photos';
-  #API_KEY = 'LxvKVGJqiSe6NcEVZOaLXC-f2JIIWZaq_o0WrF8mwJc';
-
   #page;
   #query;
 
-  #searchParams = new URLSearchParams({
-    per_page: 30,
-    client_id: this.#API_KEY,
-    color: 'black',
-    orientation: 'portrait',
-  });
+  // #searchParams = new URLSearchParams({
+  //   per_page: 30,
+  //   color: 'black',
+  //   orientation: 'portrait',
+  // });
 
   constructor() {
     this.#page = 1;
     this.#query = '';
   }
 
-  getImages(query) {
+  async getImages() {
     // const { data } = await axios.get(
     //   `?page=${this.#page}&query=${this.#query}&${this.#searchParams}`
     // );
-    // return data;
-    return fetch(
-      `${this.#BASE_URL}?page=${this.#page}&query=${this.#query}&${
-        this.#searchParams
-      }`
-    ).then(response => {
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-      return response.json();
+
+    const { data } = await axios.get('/photos', {
+      params: {
+        page: this.#page,
+        query: this.#query,
+        per_page: 30,
+        color: 'black',
+        orientation: 'portrait',
+      },
     });
+
+    return data;
+
+    // const response = await fetch(
+    //   `${this.#BASE_URL}?page=${this.#page}&query=${this.#query}&${
+    //     this.#searchParams
+    //   }`
+    // );
+    // return await response.json();
   }
 
   get page() {

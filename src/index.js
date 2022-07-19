@@ -5,115 +5,59 @@ import { getRefs } from './js/getRers';
 
 import * as ContactsAPI from './js/service/contact.service';
 import { createListContacts } from './templates/createListContacts';
-import { createCardcontact } from './templates/createCardcontact';
+import { createCardContact } from './templates/createCardContact';
 
 const refs = getRefs();
 
-//=========================
-// GET -> /contacts
-// getContacts()
-//   .then(data => {
-//     const markup = createListcontacts(data);
-//     listRef.innerHTML = markup.join('');
-//   })
-//   .catch(error => console.log(error));
-//=========================
-// GET -> /contacts/:id
-// getContactById(15)
-//   .then(data => {
-//     const markup = createCardcontact(data);
-//     listRef.innerHTML = markup;
-//   })
-//   .catch(error => console.log(error));
-//=========================
-// POST -> /contacts
-// const mango = {
-//   name: 'Mango',
-//   email: 'mango@gmail.com',
-//   phone: '55555555',
-// };
-//  createContact(mango).then(data => {
-//    Notify.success(`${data.name} created!!!`);
-//  });
-//=========================
-//PUT -> /contacts/:id
-// const newContact = {
-//   name: 'Mango people net',
-//   phone: '05000000000',
-//   email: 'mangoPeopleNet@gmail.com',
-// };
-// updateContact(55, newContact)
-//   .then(({ name }) => {
-//     Notify.success(`${name} was updated!!!`);
-//   })
-//   .catch(error => console.log(error));
-//***************** */
-
-// const getContacts = async () => {
-//   try {
-//     const data = await ContactsAPI.getContacts();
-//     const markup = createListContacts([...data].reverse());
-//     refs.list.innerHTML = markup.join('');
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
-ContactsAPI.getContacts()
-  .then(data => {
+const getContacts = async () => {
+  try {
+    const data = await ContactsAPI.getContacts();
     const markup = createListContacts([...data].reverse());
     refs.list.innerHTML = markup.join('');
-    // Notify.success(`All contacts update!!!`);
-  })
-  .catch(error => console.log(error));
-/******************* */
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 // document.addEventListener('DOMContentLoaded', getContacts);
 
-// .then(data => {
-//   const markup = createListContacts([...data].reverse());
-//   refs.list.innerHTML = markup.join('');
-//   // Notify.success(`All contacts update!!!`);
-// })
-// .catch(error => console.log(error));
+refs.info.addEventListener('click', async () => {
+  try {
+    const data = await ContactsAPI.getContactById(23);
+    const markup = createCardContact(data);
+    refs.list.innerHTML = markup;
+  } catch (error) {
+    console.log(error);
+  }
+});
 
-// const newContact = {
-//   id: 51,
-//   name: 'Poly',
-// };
+refs.update.addEventListener('click', async () => {
+  const newContact = {
+    name: 'Kiwi',
+    email: 'kiwi@gmail.com',
+    id: 51,
+  };
 
-// refs.update.addEventListener('click', () => {
-//   ContactsAPI.updateContact(newContact)
-//     .then(({ name }) => {
-//       Notify.success(`${name} was updated!!!`);
-//     })
-//     .catch(error => console.log(error));
-// });
+  try {
+    const { name } = await ContactsAPI.updateContact(newContact);
+    Notify.success(`${name} was updated!!!`);
+  } catch (error) {
+    console.log(error);
+  }
+});
 
-// refs.delete.addEventListener('click', () => {
-//   console.log('del');
-//   ContactsAPI.deleteContact(52)
-//     .then(({ name }) => {
-//       Notify.info(`${name} was deleted`);
-//     })
-//     .catch(error => {
-//       Notify.failure('Something wrong!');
-//     });
-// });
-
-refs.list.addEventListener('click', event => {
+refs.list.addEventListener('click', async event => {
   if (event.target.nodeName !== 'BUTTON') return;
   const card = event.target.closest('.js-contact-card');
 
   card.remove();
 
-  ContactsAPI.deleteContact(card.dataset.id)
-    .then(({ name }) => {
-      Notify.info(`${name} was deleted`, { position: 'left-top' });
-    })
-    .catch(error => {
-      Notify.failure('Something wrong!', { position: 'left-top' });
-    });
+  try {
+    const { name } = await ContactsAPI.deleteContact(card.dataset.id);
+    Notify.info(`${name} was deleted`, { position: 'left-top' });
+  } catch (error) {
+    Notify.failure('Something wrong!', { position: 'left-top' });
+  }
 });
 
 const handleSearchInput = async event => {
@@ -132,3 +76,41 @@ const handleSearchInput = async event => {
 };
 
 refs.searchForm.addEventListener('input', throttle(handleSearchInput, 300));
+
+// const t0 = Date.now();
+// aa();
+// console.log('THE END');
+// console.log(`На всё про всё заняло ${(Date.now() - t0) / 1000} секунд`);
+
+// async function aa() {
+//   console.log(' 1 - Начинаем');
+//   const t1 = Date.now();
+//   setTimeout(() => {
+//     console.log('Отлучусь на 100  миллисекунд');
+//     console.log(`Меня не было всего ${Date.now() - t1} милесекунд`);
+//   }, 100);
+
+//   //   Далее идёт просто очень долгая операция, которая выполняется более 1 секунды  (где-то 1.7 секунды =  1700 ms)
+//   for (let i = 0; i < 1000000000; i++) {
+//     if (i % 2 === 0) {
+//       Math.pow(i, 1.5);
+//     }
+//   }
+//   //   Конец долгоиграющей операции
+
+//   console.log(
+//     '2 - Я перебрал 100 миллионов!!! чисел и у каждого четного извлек корень квадратный и возвл в 3-ю степень'
+//   );
+//   console.log(`3 - И это заняло ${(Date.now() - t1) / 1000} секунд`);
+//   console.log(await second());
+//   // console.log(); //undefind
+//   console.log('Пора заканчивать');
+// }
+// function second() {
+//   const x = new Promise(r => {
+//     console.log('4 - Мы тут Promise создаём, если что ...');
+//     r();
+//   });
+//   console.log('5 - Ну, Promise вроде создали');
+//   return x;
+// }
